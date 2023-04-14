@@ -82,3 +82,4 @@
         <!-- Masthead-->
         <header class="masthead bg-primary text-white text-center">
         </header>
+        <div class="wrapper">

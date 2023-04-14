@@ -11511,3 +11511,27 @@ html {
 .height-adjust {
     height: 1rem;
 }
+        
+.img-profile {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.xp-bar {
+    width: 100%;
+    height: 10px;
+    background-color: lightgray;
+    margin-bottom: 5px;
+}
+
+.xp-progress {
+    width: 0%; /* Adjust based on XP values */
+    height: 10px;
+    background-color: green;
+}
+
+.completed-bounties {
+    margin-top: 15px;
+}

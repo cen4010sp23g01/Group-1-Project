@@ -134,3 +134,57 @@ function loginUser($conn, $username, $pwd) {
 		exit();
 	}
 }
+
+// Calculate level from experience
+function calcLevel($exp) {
+	$lvl = 1 + pow(($exp/10),(1/2));
+    return $lvl;
+}
+
+//Calculate experience from level
+function calcExp($lvl) {
+	$exp = pow(($lvl - 1), 2) * 10;
+    return $exp;
+}
+
+// Calculate current experience
+function calcCurrent($exp, $lvl) {
+	$minExp = calcExp($lvl);
+    $currExp = $exp - $minExp;
+    return $currExp;
+}
+
+// Calculate experience for next level
+function calcNext($lvl) {
+	$currLvlExp = calcExp($lvl);
+    $nextLvlExp = calcExp($lvl + 1);
+    
+    $lvlDiff = $nextLvlExp - $currLvlExp;
+    return $lvlDiff;
+}
+
+// Calculate completed bounties
+function calcCompleted($conn, $userID, $bountyDifficulty) {
+	$sql = "SELECT COUNT(*) AS bountyTotal FROM bounties WHERE bountyUID = ? AND (? = 0 OR bountyDifficulty = ?);";
+	$stmt = mysqli_stmt_init($conn);
+	if (!mysqli_stmt_prepare($stmt, $sql)) {
+	 	header("location: ../index.php");
+        exit();
+	}
+
+	mysqli_stmt_bind_param($stmt, "sss", $userID, $bountyDifficulty, $bountyDifficulty);
+	mysqli_stmt_execute($stmt);
+
+	// "Get result" returns the results from a prepared statement
+	$resultData = mysqli_stmt_get_result($stmt);
+
+	if ($row = mysqli_fetch_assoc($resultData)) {
+		return $row['bountyTotal'];
+	}
+	else {
+		return 0;
+	}
+
+	mysqli_stmt_close($stmt);
+    
+}
