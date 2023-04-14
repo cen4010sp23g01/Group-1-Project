@@ -1,5 +1,6 @@
 <?php
   include_once 'header.php';
+  include 'logic.php';
 ?>
 
 <!-- Home Section-->
@@ -30,21 +31,20 @@
         </div>
         
         <?php
-            if ($_SERVER["REQUEST_METHOD"] == "POST") {                
+            if ($_SERVER["REQUEST_METHOD"] == "POST") {    
                 $uid = $_POST["uid"];                
 
-                $sql = "SELECT name FROM user WHERE id = " . $uid;
+                $sql = "SELECT userName FROM users WHERE userID = " . $uid;
                 $result = mysqli_query($conn, $sql);
 
                 if (mysqli_num_rows($result) > 0) {
                     // output data of each row
                     while($row = mysqli_fetch_assoc($result)) {
-                    $uname = $row["name"];
+                    $uname = $row["userName"];
                     }
                 } else {
                     echo "0 results";
                 }
-                mysqli_close($conn);
             }
         ?>
                 

@@ -7,7 +7,7 @@ if (isset($_POST["submit"])) {
   $pwd = $_POST["pwd"];
   $pwdRepeat = $_POST["pwdrepeat"];
 
-  require_once "dbh.inc.php";
+  require_once 'dbh.inc.php';
   require_once 'functions.inc.php';
 
   // Check if inputs empty
@@ -33,4 +33,3 @@ if (isset($_POST["submit"])) {
 	header("location: ../createaccount.php");
     exit();
 }
-?>

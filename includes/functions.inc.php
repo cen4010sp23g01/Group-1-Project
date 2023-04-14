@@ -39,21 +39,22 @@ function pwdMatch($pwd, $pwdrepeat) {
 
 // Insert new user into database
 function createUser($conn, $username, $pwd) {
+  $sql = "INSERT INTO users (userName, userPassword) VALUES (?, ?);";
 
-	$sql_u = "SELECT * FROM user WHERE name='$username'";
-	$res_u = mysqli_query($conn, $sql_u);
-
-	if (mysqli_num_rows($res_u) > 0) {
-  	  header("location: ../signup.php?error=usernametaken");
-  	}
-	else{
-	$hashedPwd = password_hash($pwd, PASSWORD_DEFAULT);
-
-	$sql = "INSERT INTO user (Name, Password) VALUES ('$username', '$hashedPwd');";
-		mysqli_query($conn, $sql);
-		mysqli_close($conn);
-		header("location: ../signup.php?error=none");
+	$stmt = mysqli_stmt_init($conn);
+	if (!mysqli_stmt_prepare($stmt, $sql)) {
+	 	header("location: ../createaccount.php?error=stmtfailed");
+		exit();
 	}
+
+	//$hashedPwd = password_hash($pwd, PASSWORD_DEFAULT);
+
+	mysqli_stmt_bind_param($stmt, "ss", $username, $pwd);
+	mysqli_stmt_execute($stmt);
+	mysqli_stmt_close($stmt);
+	mysqli_close($conn);
+	header("location: ../createaccount.php?error=none");
+	exit();
 }
 
 // Check for empty input login
@@ -68,16 +69,42 @@ function emptyInputLogin($username, $pwd) {
 	return $result;
 }
 
+// Check for correct password
+function checkPassword($pwd, $pwdHashed) {
+	$result;
+	if ($pwd === $pwdHashed) {
+		$result = true;
+	}
+	else {
+		$result = false;
+	}
+	return $result;
+}
+
 // Check if username is in database, if so then return data
 function userIDExists($conn, $username) {
-  $sql = "SELECT * FROM user WHERE name = '$username';";
+  $sql = "SELECT * FROM users WHERE userName = ?;";
+	$stmt = mysqli_stmt_init($conn);
+	if (!mysqli_stmt_prepare($stmt, $sql)) {
+	 	header("location: ../createaccount.php?error=stmtfailed");
+		exit();
+	}
 
-  $result = mysqli_query($conn, $sql);
+	mysqli_stmt_bind_param($stmt, "s", $username);
+	mysqli_stmt_execute($stmt);
 
-  if(mysqli_num_rows($result) > 0){
-	return mysqli_fetch_assoc($result);
-  }
-  else{return false;}
+	// "Get result" returns the results from a prepared statement
+	$resultData = mysqli_stmt_get_result($stmt);
+
+	if ($row = mysqli_fetch_assoc($resultData)) {
+		return $row;
+	}
+	else {
+		$result = false;
+		return $result;
+	}
+
+	mysqli_stmt_close($stmt);
 }
 
 // Log user into website
@@ -89,8 +116,8 @@ function loginUser($conn, $username, $pwd) {
 		exit();
 	}
 
-	$pwdHashed = $userIDExists["Password"];
-	$checkPwd = password_verify($pwd, $pwdHashed);
+	$pwdHashed = $userIDExists["userPassword"];
+	$checkPwd = checkPassword($pwd, $pwdHashed); //password_verify($pwd, $pwdHashed);
 
 	if($checkPwd === false) {
 		header("location: ../login.php?error=wronglogin");
@@ -98,13 +125,12 @@ function loginUser($conn, $username, $pwd) {
 	}
 	elseif ($checkPwd === true) {
 		session_start();
-		$_SESSION["userid"] = $userIDExists["ID"];
-		$_SESSION["username"] = $userIDExists["Name"];
-		$_SESSION["userpwd"] = $userIDExists["Password"];
-		$_SESSION["userexp"] = $userIDExists["Experience"];
-		$_SESSION["userlvl"] = $userIDExists["Level"];
+		$_SESSION["userid"] = $userIDExists["userID"];
+		$_SESSION["username"] = $userIDExists["userName"];
+		$_SESSION["userpwd"] = $userIDExists["userPassword"];
+		$_SESSION["userexp"] = $userIDExists["userExperience"];
+		$_SESSION["userlvl"] = $userIDExists["userLevel"];
 		header("location: ../index.php?error=none");
 		exit();
 	}
 }
-?>

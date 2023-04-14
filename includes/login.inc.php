@@ -9,7 +9,7 @@ if (isset($_POST["submit"])) {
   // run a bunch of error handlers to catch any user mistakes
   // functions can be found in functions.inc.php
 
-  require_once "dbh.inc.php";
+  require_once 'dbh.inc.php';
   require_once 'functions.inc.php';
 
   // inputs empty
@@ -26,4 +26,3 @@ if (isset($_POST["submit"])) {
 	header("location: ../login.php");
     exit();
 }
-?>

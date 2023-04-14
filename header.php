@@ -56,7 +56,7 @@
                             <ul class='navbar-nav ms-auto'>
                                 <li class='nav-item mx-0 mx-lg-1'><a class='nav-link py-3 px-0 px-lg-3 rounded' href='logout.php'>Logout</a></li>
                             </ul>
-                        </div>"
+                        </div>";
                     }
                     else {
                         echo "
@@ -69,7 +69,7 @@
                             <ul class='navbar-nav ms-auto'>
                                 <li class='nav-item mx-0 mx-lg-1'><a class='nav-link py-3 px-0 px-lg-3 rounded' href='login.php'>Log In</a></li>
                             </ul>
-                        </div>"
+                        </div>";
                     }
                 ?>
                 <div class="collapse navbar-collapse" id="navbarResponsive">
@@ -82,5 +82,3 @@
         <!-- Masthead-->
         <header class="masthead bg-primary text-white text-center">
         </header>
-        <!-- Wrapper aligns with footer-->
-        <div class="wrapper">
