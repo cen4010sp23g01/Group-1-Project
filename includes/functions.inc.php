@@ -165,7 +165,7 @@ function calcNext($lvl) {
 
 // Calculate completed bounties
 function calcCompleted($conn, $userID, $bountyDifficulty) {
-	$sql = "SELECT COUNT(*) AS bountyTotal FROM bounties WHERE bountyUID = ? AND (? = 0 OR bountyDifficulty = ?);";
+	$sql = "SELECT COUNT(*) AS bountyTotal FROM bounties WHERE bountyUID = ? AND bountyComplete <> 0 AND (? = 0 OR bountyDifficulty = ?);";
 	$stmt = mysqli_stmt_init($conn);
 	if (!mysqli_stmt_prepare($stmt, $sql)) {
 	 	header("location: ../index.php");
