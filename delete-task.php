@@ -1,11 +1,11 @@
 <?php
     include('config/constants.php');
 
-    
-
     //check if bounty_id exists
     
-    if (isset($_GET['bounties'])){
+    if (isset($_GET['bountyID'])){
+
+        $bountyID = $_GET['bountyID'];
         
         $conn = mysqli_connect(LOCALHOST, DB_USERNAME, DB_PASSWORD) or die(mysqli_error());
         
@@ -17,19 +17,15 @@
 
         if ($res==true){
             $_SESSION['delete'] = "Bounty Deleted Sucessfully";
-            header("location:http://localhost/cen4010sp23g01/bountyboard.php");
+            header("location: bountyboard.php");
         }   
 
         else{
             $_SESSION['delete_fail'] = "Failed to delete Bounty";
-            header("location:http://localhost/cen4010sp23g01/bountyboard.php");
+            header("location: bountyboard.php");
         }
     }    
     else{
-        header("location:http://localhost/cen4010sp23g01/bountyboard.php");
+        header("location: bountyboard.php");
     }
 
-
-
-
-?>
