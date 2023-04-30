@@ -2,7 +2,50 @@
     include_once 'header.php';
     include 'config/constants.php';
 
-    if(isset($_GET['bountyID'])){
+    if(isset($_POST['submit'])){
+        
+        //get and save input values 
+        $bountyID = $_GET['bountyID'];
+        $bountyName= $_POST['bountyName'];
+        $bountyNotes= $_POST['bountyNotes'];
+        $bountyDifficulty =$_POST['priority'];
+        $bountyDate = $_POST['deadline'];
+        $userID = $_SESSION['userid'];
+
+        $conn = mysqli_connect(LOCALHOST, DB_USERNAME, DB_PASSWORD) or die(mysqli_error());
+        
+        /*if($conn==true){
+            echo "database connected";
+        }*/
+        
+        $db_select = mysqli_select_db($conn, DB_NAME) or die(mysqli_error());
+        /*if($db_select==true){
+           echo "database selected";
+        }*/
+
+        $sql = "UPDATE bounties SET
+            bountyUID = '$userID',
+            bountyName = '$bountyName',
+            bountyDate = '$bountyDate',
+            bountyDifficulty = '$bountyDifficulty',
+            bountyNotes = '$bountyNotes'
+            WHERE bountyID = '$bountyID';
+        ";
+
+        $res = mysqli_query($conn, $sql);
+
+        if($res===true)
+        {
+            //echo '<a href="bountyboard.php">Bounty Board</a>';
+            header("location: bountyboard.php"); //redirects to bounty board
+        }
+        else{
+            header("location: update-task.php"); //else stays in update bounty page
+        }
+            
+    }
+
+    if (isset($_GET['bountyID'])){
         $bountyID = $_GET['bountyID'];
 
         $conn = mysqli_connect(LOCALHOST, DB_USERNAME, DB_PASSWORD) or die(mysqli_error());
@@ -13,17 +56,16 @@
 
         $res = mysqli_query($conn, $sql);
 
-        if($res==true)
+        if(mysqli_num_rows($res) > 0)
         {
             $row = mysqli_fetch_assoc($res);
-            $bountyID = $row['bountyID'];
             $bountyName = $row['bountyName'];
             $bountyDifficulty = $row['bountyDifficulty'];
             $bountyDate = $row['bountyDate'];
             $bountyNotes = $row['bountyNotes'];
         }
         else{
-            header("location: add-task.php"); //else stays in create bounty page
+            header("location: update-task.php"); //else stays in update bounty page
         }
     }
     
@@ -68,7 +110,7 @@
                         <tr>
 
                         <tr>
-                            <td>Deadline:</td> <!-- Select the deadline date via calendar -->
+                            <td>Start Date:</td> <!-- Select the deadline date via calendar -->
                             <td><input type="date" name="deadline" value="<?php echo $bountyDate;?>"></td>
                         <tr>
 

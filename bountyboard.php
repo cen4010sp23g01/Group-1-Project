@@ -32,6 +32,14 @@
                             echo $_SESSION['delete_fail'];
                             unset ($_SESSION['delete_fail']);
                         }
+                        if(isset($_SESSION['complete'])){
+                            echo $_SESSION['complete'];
+                            unset ($_SESSION['complete']);
+                        }
+                        if(isset($_SESSION['complete_fail'])){
+                            echo $_SESSION['complete_fail'];
+                            unset ($_SESSION['complete_fail']);
+                        }
 
                     ?>
                 </p>
@@ -43,7 +51,7 @@
                             <th>#</th>
                             <th>Name</th>
                             <th>Difficulty</th>
-                            <th>Deadline</th>
+                            <th>Start Date</th>
                         </tr>
 
                         <?php
@@ -51,7 +59,7 @@
 
                     $db_select = mysqli_select_db($conn, DB_NAME) or die(mysqli_error());
 
-                    $sql = "SELECT * FROM bounties"; //select database
+                    $sql = "SELECT * FROM bounties WHERE bountyComplete = 0"; //select database
 
                     $res = mysqli_query($conn, $sql);
 
@@ -72,6 +80,7 @@
                             <td><?php echo $bountyDifficulty; ?></td>
                             <td><?php echo $bountyDate; ?></td>
                             <td>
+                                <a href="complete-task.php?bountyID=<?php echo $bountyID;?>">Complete</a>
                                 <a href="update-task.php?bountyID=<?php echo $bountyID;?>">Update</a>
                                 <a href="delete-task.php?bountyID=<?php echo $bountyID;?>">Delete</a>
                             </td>

@@ -15,7 +15,7 @@
 
         $res = mysqli_query($conn, $sql);
 
-        if ($res==true){
+        if ($res===true){
             $_SESSION['delete'] = "Bounty Deleted Sucessfully";
             header("location: bountyboard.php");
         }   

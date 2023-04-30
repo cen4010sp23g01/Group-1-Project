@@ -39,7 +39,7 @@
                         <tr>
 
                         <tr>
-                            <td>Deadline:</td> <!-- Select the deadline date via calendar -->
+                            <td>Start Date:</td> <!-- Select the start date via calendar -->
                             <td><input type="date" name="deadline"></td>
                         <tr>
 

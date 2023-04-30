@@ -12,6 +12,18 @@ function emptyInputSignup($username, $pwd, $pwdRepeat) {
 	return $result;
 }
 
+// Check for empty input update
+function emptyInputUpdate($username) {
+	$result;
+	if (empty($username)) {
+		$result = true;
+	}
+	else {
+		$result = false;
+	}
+	return $result;
+}
+
 // Check invalid username
 function invalidUsername($username) {
 	$result;
@@ -138,7 +150,7 @@ function loginUser($conn, $username, $pwd) {
 // Calculate level from experience
 function calcLevel($exp) {
 	$lvl = 1 + pow(($exp/10),(1/2));
-    return $lvl;
+    return intval($lvl);
 }
 
 //Calculate experience from level
@@ -187,4 +199,25 @@ function calcCompleted($conn, $userID, $bountyDifficulty) {
 
 	mysqli_stmt_close($stmt);
     
+}
+
+// Insert new user into database
+function updateUser($conn, $userid, $username) {
+    $sql = "UPDATE users SET userName = ? WHERE userID = ?;";
+
+	$stmt = mysqli_stmt_init($conn);
+	if (!mysqli_stmt_prepare($stmt, $sql)) {
+	 	header("location: ../updateaccount.php?error=stmtfailed");
+		exit();
+	}
+    
+	mysqli_stmt_bind_param($stmt, "ss", $username, $_SESSION["userid"]);
+	mysqli_stmt_execute($stmt);
+    
+    $_SESSION["username"] = $username;
+    
+	mysqli_stmt_close($stmt);
+    
+	header("location: ../updateaccount.php?error=none");
+	exit();
 }

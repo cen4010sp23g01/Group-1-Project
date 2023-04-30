@@ -29,17 +29,18 @@ include_once 'header.php';
                 ?>
                 
                 <h2><?php echo $_SESSION["username"];?></h2>
-                <div class="xp-bar">
+                <!--<div class="xp-bar">
                     <div class="xp-progress"></div>
-                </div>
-                <h3>Level <?php echo $userLvl;?></h3>
-                <h5><?php echo $currExp;?>/<?php echo $nextExp;?> XP</h5>
+                </div>-->
+                <h3>Level <?php echo intval($userLvl);?></h3>
+                <h5><?php echo intval($currExp);?>/<?php echo intval($nextExp);?> XP</h5>
                 <div class="completed-bounties">
                     Completed Bounties: <?php echo $totalBounties;?><br> 
                     Easy: <?php echo $easyBounties;?><br>
                     Medium: <?php echo $mediumBounties;?><br>
                     Hard: <?php echo $hardBounties;?><br>
                 </div>
+                <div><a href="updateaccount.php">Edit</a></div>
 
                 <!--<a href="completed-bounties.html">Completed Bounties</a>  Add hyperlink to bountyboard -->
             </div>
